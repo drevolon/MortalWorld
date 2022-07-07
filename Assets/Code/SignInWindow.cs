@@ -20,7 +20,14 @@ public class SignInWindow: AccountDataWindowsBase
     [SerializeField]
     private Image _loadingImg;
 
-    private bool _loginResult=false;
+    [SerializeField]
+    private Canvas _loadingCanvas;
+
+    private Transform _transformUploader;
+
+    private bool _loginResult;
+
+    
 
     protected override void SubscriptionsElementsUi()
     {
@@ -41,6 +48,7 @@ public class SignInWindow: AccountDataWindowsBase
     private void SignIn()   
     {
         _loginResult = true;
+        Debug.Log($"Begin login");
         PlayFabClientAPI.LoginWithPlayFab(new LoginWithPlayFabRequest
         {
             Username = _username,
@@ -50,6 +58,7 @@ public class SignInWindow: AccountDataWindowsBase
             Debug.Log($"Error: {error.ErrorMessage}");
             _textStatus.color = Color.red;
             _textStatus.text = $"Error login: {_username}";
+            _loginResult = false;
         });
         
     }
@@ -58,11 +67,11 @@ public class SignInWindow: AccountDataWindowsBase
     {
         if (_loginResult)
         {
-            _loadingImg.enabled = true;
-            _loadingImg.fillAmount=+Time.deltaTime*1000;
+            _loadingCanvas.enabled = true;
+            _loadingImg.fillAmount=+Time.deltaTime*100;
         }else
         {
-            _loadingImg.enabled = false;
+            _loadingCanvas.enabled = false;
             _loadingImg.fillAmount = 0;
         }
     }
