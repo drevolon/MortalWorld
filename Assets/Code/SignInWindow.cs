@@ -17,6 +17,9 @@ public class SignInWindow: AccountDataWindowsBase
     [SerializeField]
     private Text _textStatus;
 
+    [SerializeField]
+    private Image _loadingImg;
+
     private bool _loginResult=false;
 
     protected override void SubscriptionsElementsUi()
@@ -37,7 +40,7 @@ public class SignInWindow: AccountDataWindowsBase
 
     private void SignIn()   
     {
-        //StartCoroutine(LoadDataClient());
+        _loginResult = true;
         PlayFabClientAPI.LoginWithPlayFab(new LoginWithPlayFabRequest
         {
             Username = _username,
@@ -51,31 +54,27 @@ public class SignInWindow: AccountDataWindowsBase
         
     }
 
+    private void Update()
+    {
+        if (_loginResult)
+        {
+            _loadingImg.enabled = true;
+            _loadingImg.fillAmount=+Time.deltaTime*1000;
+        }else
+        {
+            _loadingImg.enabled = false;
+            _loadingImg.fillAmount = 0;
+        }
+    }
+
     private void ResultLoad(LoginResult loginResult)
     {
-        _loginResult = true;
-
+        _loginResult = false;
         Debug.Log($"Success: {_username}");
         _textStatus.color = Color.green;
         _textStatus.text = $"Success login: {_username}";
         EnterInGameScene();
     }
 
-    IEnumerator LoadDataClient()
-    {
-        while (!_loginResult)
-        {
-            PlayFabClientAPI.LoginWithPlayFab(new LoginWithPlayFabRequest
-            {
-                Username = _username,
-                Password = _password
-            }, ResultLoad, error =>
-            {
-                Debug.Log($"Error: {error.ErrorMessage}");
-                _textStatus.color = Color.red;
-                _textStatus.text = $"Error login: {_username}";
-            });
-            yield return null;
-        }
-    }
+    
 }
