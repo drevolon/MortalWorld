@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class AccountDataWindowsBase : MonoBehaviour
@@ -34,5 +35,10 @@ public class AccountDataWindowsBase : MonoBehaviour
     private void UpdateUsername(string username)
     {
         _username= username;
+    }
+
+    public void EnterInGameScene()
+    {
+        SceneManager.LoadScene(1);
     }
 }

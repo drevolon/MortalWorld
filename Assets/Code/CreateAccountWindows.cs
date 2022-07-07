@@ -31,6 +31,7 @@ public class CreateAccountWindows : AccountDataWindowsBase
         }, result=>
         {
             Debug.Log($"Success: {_username}");
+            EnterInGameScene();
         }, error =>
         {
             Debug.Log($"Error: {_username}");
