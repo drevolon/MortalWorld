@@ -41,6 +41,7 @@ namespace Photon.Pun.Demo.PunBasics
 		[SerializeField]
 		private LoaderAnime loaderAnime;
 
+		
 		#endregion
 
 		#region Private Fields
@@ -214,9 +215,9 @@ namespace Photon.Pun.Demo.PunBasics
 				Debug.Log("We load the 'Room for 1' ");
 
 				// #Critical
-				// Load the Room Level. 
-				PhotonNetwork.LoadLevel("PunBasics-Room for 1");
-
+				// Load the Room Level. _nameScene PunBasics-Room  my
+				//PhotonNetwork.LoadLevel("PunBasics-Room for 1");
+				PhotonNetwork.LoadLevel("PunBasics-Room  my");
 			}
 		}
 

@@ -35,7 +35,11 @@ namespace Photon.Pun.Demo.PunBasics
 	    [SerializeField]
 	    private Slider playerHealthSlider;
 
-        PlayerManager target;
+		[Tooltip("ДЗ урок 7")]
+		[SerializeField]
+		private Text _sceneViewId;
+
+		PlayerManager target;
 
 		float characterControllerHeight;
 
@@ -79,6 +83,10 @@ namespace Photon.Pun.Demo.PunBasics
 			if (playerHealthSlider != null) {
 				playerHealthSlider.value = target.Health;
 			}
+
+			//ДЗ 7
+
+			_sceneViewId.text = target.SceneViewId.ToString();
 		}
 
 		/// <summary>
