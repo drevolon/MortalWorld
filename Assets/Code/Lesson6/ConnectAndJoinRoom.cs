@@ -16,8 +16,10 @@ public class ConnectAndJoinRoom : MonoBehaviour, IConnectionCallbacks, IMatchmak
     [SerializeField]
     private TMP_Text _stateUiText;
 
+  
+
     [SerializeField]
-    private TMP_Dropdown _roomList;
+    private TMP_Text _roomList;
 
     [SerializeField]
     private Button _exitButton;
@@ -59,7 +61,7 @@ public class ConnectAndJoinRoom : MonoBehaviour, IConnectionCallbacks, IMatchmak
 
         var state = _lbc.State.ToString();
         _stateUiText.text = string.Format("State {0} userID {1}", state, _lbc.UserId);
-
+        
         //_lbc.OpGetGameList();
     }
 
@@ -169,14 +171,15 @@ public class ConnectAndJoinRoom : MonoBehaviour, IConnectionCallbacks, IMatchmak
         foreach (var itemRoom in roomList)
         {
             var nameRom = itemRoom.Name;
-            TMPro.TMP_Dropdown.OptionData item = new TMP_Dropdown.OptionData ();
-            item.text = nameRom;
-            
-            _roomList.options.Add(item);
+            // TMPro.TMP_Dropdown.OptionData item = new TMP_Dropdown.OptionData ();
+            // item.text = nameRom;
 
-            Debug.Log($"room: {itemRoom}");
+            // _roomList.options.Add(item);
+            _roomList.text = nameRom;
+            Debug.Log($"room: {nameRom}");
         }     
-
-        
     }
+
+
+
 }
