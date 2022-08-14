@@ -3586,6 +3586,11 @@ namespace Photon.Realtime
                 }
             }
         }
+
+        public void Disconnect(DisconnectCause disconnectCause, object p)
+        {
+            throw new NotImplementedException();
+        }
     }
 
 

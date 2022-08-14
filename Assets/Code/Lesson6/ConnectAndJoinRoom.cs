@@ -1,12 +1,12 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Photon.Pun;
-using Photon.Realtime;
+
+
 using UnityEngine.UI;
 using TMPro;
 using Hashtable = ExitGames.Client.Photon.Hashtable;
-using System;
+using Photon.Pun;
+using Photon.Realtime;
 
 public class ConnectAndJoinRoom : MonoBehaviour, IConnectionCallbacks, IMatchmakingCallbacks, ILobbyCallbacks
 {
@@ -15,24 +15,57 @@ public class ConnectAndJoinRoom : MonoBehaviour, IConnectionCallbacks, IMatchmak
 
     [SerializeField]
     private TMP_Text _stateUiText;
-
-  
-
+    
     [SerializeField]
     private TMP_Text _roomList;
 
     [SerializeField]
+    private TMP_Text _currentRoom;
+
+    [SerializeField]
+    private  TMP_InputField _inputFieldNameRoom;
+
+    [SerializeField]
+    private Toggle _toggleVisibleRoom;
+
+    [SerializeField]
+    private Toggle _toggleOpenRoom;
+
+    [SerializeField]
+    private TMP_InputField _expectedUsers;
+
+    [SerializeField]
+    private TMP_Text _countRooms;
+
+    [SerializeField]
     private Button _exitButton;
+
+    [SerializeField]
+    private Button _connectButton;
+
+    [SerializeField]
+    private Button _logOutRoom;
+
+    private TypedLobby customLobby = new TypedLobby("customLobby",  LobbyType.Default);
 
     private const string GAME_MOD_KEY = "gm";
     private const string AI_MOD_KEY = "ai";
+    private const string _roomName = "MyFirstRoom";
+
+    private Dictionary<string, RoomInfo> cachedRoomList = new Dictionary<string,  RoomInfo>();
+
+    List<RoomInfo> _roomInfo;
 
     LoadBalancingClient _lbc;
+    private string[] expectedUsers;
 
     private void Start()
     {
         _exitButton.onClick.AddListener(OnExitRoom);
+        _connectButton.onClick.AddListener(OnConnectRoom);
+        _logOutRoom.onClick.AddListener(OnLogOutRoom);
 
+        _inputFieldNameRoom.text = _roomName;
 
         _lbc = new LoadBalancingClient();
         _lbc.AddCallbackTarget(this);
@@ -41,16 +74,38 @@ public class ConnectAndJoinRoom : MonoBehaviour, IConnectionCallbacks, IMatchmak
             Debug.Log("Error Conncted");
     }
 
+    private void OnLogOutRoom()
+    {
+
+        _lbc.OpJoinLobby(customLobby);  
+    }
+
+    private void OnConnectRoom()
+    {
+        if (!_lbc.ConnectUsingSettings(_serverSettings.AppSettings))
+            Debug.Log("Error Conncted");
+
+        Debug.Log($"Run OnConnectRoom {_roomName}");
+        RoomOptions paramsOptions = new RoomOptions
+        {
+            IsOpen = _toggleOpenRoom,
+            IsVisible = _toggleVisibleRoom,
+             PublishUserId=true,
+             MaxPlayers=15
+          
+        };
+        var paramsRoom = new EnterRoomParams
+        {
+            ExpectedUsers= expectedUsers,
+            RoomName= _inputFieldNameRoom.text, 
+            RoomOptions=paramsOptions
+        };
+        _lbc.OpJoinOrCreateRoom(paramsRoom);
+    }
+
     private void OnExitRoom()
     {
-        var roomOptions = new RoomOptions
-        {
-            IsVisible = false,
-            IsOpen = false,
-            PublishUserId = true
-        };
-        var enterRoomParams = new EnterRoomParams { RoomName = "First Room", RoomOptions = roomOptions };
-        _lbc.OpCreateRoom(enterRoomParams);
+        _lbc.Disconnect(new DisconnectCause());
     }
 
     private void Update()
@@ -61,8 +116,14 @@ public class ConnectAndJoinRoom : MonoBehaviour, IConnectionCallbacks, IMatchmak
 
         var state = _lbc.State.ToString();
         _stateUiText.text = string.Format("State {0} userID {1}", state, _lbc.UserId);
-        
-        //_lbc.OpGetGameList();
+
+        if (_expectedUsers.text!="")
+        {
+            expectedUsers = _expectedUsers.text.Split(',');
+        }
+
+            _currentRoom.text = _lbc.CurrentRoom.Name;
+            _countRooms.text = _lbc.RoomsCount.ToString();
     }
 
     private void OnDestroy()
@@ -84,13 +145,13 @@ public class ConnectAndJoinRoom : MonoBehaviour, IConnectionCallbacks, IMatchmak
             IsVisible = true,
             PublishUserId = true
         };
-        var enterRoomParams = new EnterRoomParams { RoomName="First Room", RoomOptions = roomOptions };
+        var enterRoomParams = new EnterRoomParams { RoomName= _inputFieldNameRoom.text, RoomOptions = roomOptions };
         _lbc.OpCreateRoom(enterRoomParams);
     }
 
     public void OnCreatedRoom()
     {
-        Debug.Log("OnCreatedRoom");
+        Debug.Log($"OnCreatedRoom {_inputFieldNameRoom.text}");
     }
 
     public void OnCreateRoomFailed(short returnCode, string message)
@@ -110,6 +171,7 @@ public class ConnectAndJoinRoom : MonoBehaviour, IConnectionCallbacks, IMatchmak
 
     public void OnDisconnected(DisconnectCause cause)
     {
+        Debug.Log("OnDisconnected");
     }
 
     public void OnFriendListUpdate(List<FriendInfo> friendList)
@@ -118,16 +180,11 @@ public class ConnectAndJoinRoom : MonoBehaviour, IConnectionCallbacks, IMatchmak
 
     public void OnJoinedLobby()
     {
-        Debug.Log("OnJoinedLobby");
+        Debug.Log($"OnJoinedLobby");
 
-        //var opJoinRandomRoomParams = new OpJoinRandomRoomParams
-        //{
+        cachedRoomList.Clear();
 
-        //};
-
-        //_lbc.OpJoinRandomRoom(opJoinRandomRoomParams);
-
-       // _lbc.CurrentLobby.
+        
     }
 
     public void OnJoinedRoom()
@@ -150,6 +207,8 @@ public class ConnectAndJoinRoom : MonoBehaviour, IConnectionCallbacks, IMatchmak
     public void OnLeftLobby()
     {
         Debug.Log("OnLeftLobby");
+
+        cachedRoomList.Clear();
     }
 
     public void OnLeftRoom()
@@ -164,21 +223,46 @@ public class ConnectAndJoinRoom : MonoBehaviour, IConnectionCallbacks, IMatchmak
     {
     }
 
-    public void OnRoomListUpdate(List<RoomInfo> roomList)
+    void ILobbyCallbacks.OnRoomListUpdate(List<RoomInfo> roomList)
     {
-        Debug.Log("OnRoomListUpdate active");
-
-        foreach (var itemRoom in roomList)
-        {
-            var nameRom = itemRoom.Name;
-            // TMPro.TMP_Dropdown.OptionData item = new TMP_Dropdown.OptionData ();
-            // item.text = nameRom;
-
-            // _roomList.options.Add(item);
-            _roomList.text = nameRom;
-            Debug.Log($"room: {nameRom}");
-        }     
+        Debug.Log("OnRoomListUpdate");
+        UpdateCachedRoomList(roomList);
     }
+
+    private void UpdateCachedRoomList(List<RoomInfo> roomList)
+    {
+        Debug.Log("UpdateCachedRoomList");
+        for (int i = 0; i < roomList.Count; i++)
+        {
+            RoomInfo info = roomList[i];
+            if (info.RemovedFromList)
+            {
+                cachedRoomList.Remove(info.Name);
+
+            }
+            else
+            {
+                cachedRoomList[info.Name] = info;
+            }
+
+            _roomList.text = info.Name;
+        }
+    }
+    //public void OnRoomListUpdate(List<RoomInfo> roomList)
+    //{
+    //    Debug.Log("OnRoomListUpdate active");
+
+    //    foreach (var itemRoom in roomList)
+    //    {
+    //        var nameRom = itemRoom.Name;
+    //        // TMPro.TMP_Dropdown.OptionData item = new TMP_Dropdown.OptionData ();
+    //        // item.text = nameRom;
+
+    //        // _roomList.options.Add(item);
+    //        _roomList.text = nameRom;
+    //        Debug.Log($"room: {nameRom}");
+    //    }     
+    //}
 
 
 

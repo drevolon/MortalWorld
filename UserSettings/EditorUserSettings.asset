@@ -5,65 +5,10 @@ EditorUserSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 4
   m_ConfigSettings:
-    RecentlyUsedSceneGuid-0:
-      value: 5a5757560101590a5d0c0e24427b5d44434e4c7a7b7a23677f2b4565b7b5353a
-      flags: 0
-    RecentlyUsedSceneGuid-1:
-      value: 5b52005e000651090e58597547765a44461640297b7b24602f2d4b62e3e6656d
-      flags: 0
-    RecentlyUsedSceneGuid-2:
-      value: 5300065557015c5f5f080f211326094444161b28782c24332f78456bb1b2626c
-      flags: 0
-    RecentlyUsedSceneGuid-3:
-      value: 0601030703560a5a580c0a7311770e1643151c78742e7269757f4865e0b73660
-      flags: 0
-    RecentlyUsedSceneGuid-4:
-      value: 06065551030c5e0859585f7414770e451516407e292e75312c2f4a65bab0326e
-      flags: 0
-    RecentlyUsedSceneGuid-5:
-      value: 5a530c5353040a0d085d5574487706114315197e742b75352f704861b6b06061
-      flags: 0
-    RecentlyUsedSceneGuid-6:
-      value: 54070052570d0a0d5e5b5b7516770a4846161e7e2f2d73642e284435b6e2653a
-      flags: 0
-    RecentlyUsedSceneGuid-7:
-      value: 550801020350080e5e590a7415725c44441640287a2e71347f2d1f36e4e2656a
-      flags: 0
-    RecentlyUsedSceneGuid-8:
-      value: 5b00050250000b0c5b5f0e7b12755e44174e4d7b7e2972317e791b65e0e5623b
-      flags: 0
-    RecentlyUsedSceneGuid-9:
-      value: 015752515257590a0f5b5c7045775a1414154e2f282d23312f284832e7b8366b
-      flags: 0
     RecentlyUsedScenePath-0:
-<<<<<<< Updated upstream
-      value: 22424703114646680e0b0227036c731f171311242b66333e243d04
-      flags: 0
-    RecentlyUsedScenePath-1:
       value: 22424703114646680e0b0227036c731103191b22293a68252320092a
       flags: 0
-    RecentlyUsedScenePath-2:
-      value: 224247031146466b0501182d1e6c6f181903172419262f2434071827f5ef2633ebe931a6c33f32332a4ddf290a1c002cfb091a46c21e1e040307fc025ecc13161fc00b8a2add113eca0a15cdde50fde2c0d8d7e2ddf9a9cdd0d6b4eb
-=======
-      value: 224247031146466b0501182d1e6c6f181903172419262f2434071827f5ef2633ebe931a6c33f32332a4ddf290a1c002cfb091a46c21e1e040307fc025ecc13161fc00b8a2add113eca0a15cdde50fde2c0d8d7e2ddf9a9cdd0d6b4eb
-      flags: 0
     RecentlyUsedScenePath-1:
-      value: 22424703114646680e0b0227036c7315050417247b66333e243d04
-      flags: 0
-    RecentlyUsedScenePath-2:
-      value: 22424703114646680e0b0227036c731103191b22293a68252320092a
-      flags: 0
-    RecentlyUsedScenePath-3:
-      value: 22424703114646680e0b0227036c731f171311242b66333e243d04
-      flags: 0
-    RecentlyUsedScenePath-4:
-      value: 22424703114646680e0b0227036c7315050417247a66333e243d04
->>>>>>> Stashed changes
-      flags: 0
-    RecentlyUsedScenePath-3:
-      value: 224247031146466b0501182d1e6c6f181903172419262f2434071827f5ef2633ebe931a6c33f32332a4ddf290a1c002cfb091a46c21e1e040307fc025ecc13161fc00b8a2add113eca0a15cdde50e3ecdadb94aad5f2a9cdd0d6b4eb
-      flags: 0
-    RecentlyUsedScenePath-4:
       value: 22424703114646680e0b0227036c7315050417247a66333e243d04
       flags: 0
     vcSharedLogLevel:
