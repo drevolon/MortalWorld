@@ -57,7 +57,7 @@ public class ConnectAndJoinRoom : MonoBehaviour, IConnectionCallbacks, IMatchmak
     List<RoomInfo> _roomInfo;
 
     LoadBalancingClient _lbc;
-    private string[] expectedUsers;
+    private string[] expectedUsers = {"user1", "user2" };
 
     private void Start()
     {
